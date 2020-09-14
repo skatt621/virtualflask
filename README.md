@@ -1,7 +1,7 @@
 # VirtualBox_IaC
 Python/BASH-based web interface for Oracle VM VirtualBox.
 
-# Setting up VirtualBox_IaC
+## Setting up VirtualBox_IaC
 1. sudo apt-get update -y
 2. sudo apt-get install git -y
 3. sudo git clone https://github.com/skatt621/VirtualBox_IaC.git
@@ -9,10 +9,10 @@ Python/BASH-based web interface for Oracle VM VirtualBox.
 5. cd VirtualBox_IaC
 6. ./installer.sh /home/ubuntu/VirtualBox_IaC {IP Address} 8080 21000 29000
 
-## REMINDER
+### REMINDER
 1. Place some iso files in the ISOS folder and edit the dictionaries at the top of flaskapp.py accordingly.
 
-## Initial Instructions
+### Initial Instructions
 1. Change to the WEBAPP directory and run flaskapp.py like this:  
     cd /home/ubuntu/VirtualBox_IaC/WEBAPP  
     python3 flaskapp.py  
