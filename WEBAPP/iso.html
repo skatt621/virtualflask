@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1>VM CREATION SERVER</h1>
+        <a href="/iso"><button disabled style="background-color:gray; color:white">CREATE NEW VM FROM ISO</button></a>
+        <a href="/base"><button style="background-color:blue; color:white">CREATE NEW VM FROM TEMPLATE</button></a>
+        <a href="/select"><button style="background-color:red; color:white">VIEW AVAILABLE VMS</button></a>
+        <a href="/"><button style="background-color:orange; color:white">REFRESH</button></a>
+    </head>
+    <body>
+        <h3 style="color:red; background-color:pink">{2}</h3>
+        <form action='/create'>
+            <div></div>
+            <div><pre>NAME       </pre><input size="50" type='text' name='NAME' value=''/></div>
+            <div>
+                <pre>MODE       </pre>
+                <select name='MODE' width="50">
+                    <option value="RDP">RDP</option>
+                    <option value="SSH">SSH</option>
+                </select>
+            </div>
+            <div>
+                <pre>TYPE       </pre>
+                <select name='TYPE' width="50">
+                    <option value="Ubuntu_16_D">Ubuntu 16.04 Desktop</option>
+                    <option value="Ubuntu_16_S">Ubuntu 16.04 Server</option>
+                    <option value="Ubuntu_18_D">Ubuntu 18.04 Desktop</option>
+                    <option value="Ubuntu_18_S">Ubuntu 18.04 Server</option>
+                    <option value="Ubuntu_20_D">Ubuntu 20.04 Desktop</option>
+                    <option value="Ubuntu_20_S">Ubuntu 20.04 Server</option>
+                </select>
+            </div>
+            <div><pre>PORT    </pre><input size="50" type='text' name='PORT' value='{0}' readonly="readonly"/></div>
+            <div><pre>UUID      </pre><input size="50" type='text' name='UUID' value='{1}' readonly="readonly"/></div>
+            <div><br><input type='submit' name='action' value='LAUNCH VM'/></br></div>
+        </form>
+    </body>
+</html>

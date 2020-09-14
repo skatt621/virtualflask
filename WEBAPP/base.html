@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <h1>VM CREATION SERVER</h1>
+        <a href="/iso"><button style="background-color:green; color:white">CREATE NEW VM FROM ISO</button></a>
+        <a href="/base"><button disabled style="background-color:gray; color:white">CREATE NEW VM FROM TEMPLATE</button></a>
+        <a href="/select"><button style="background-color:red; color:white">VIEW AVAILABLE VMS</button></a>
+        <a href="/"><button style="background-color:orange; color:white">REFRESH</button></a>
+
+    </head>
+    <body>
+        <br></br>
+        <h3 style="color:red; background-color:pink">{2}</h3>
+        <form action='/copy'>
+            <!--<select name='TYPE' width="50">
+                <option value="Ubuntu_16_D">Ubuntu 16.04 Desktop</option>
+            </select>-->
+            <select name='TYPE' width="50">
+                {3}
+            </select>
+            <div><pre>NAME       </pre><input size="50" type='text' name='NAME' value=''/></div>
+            <div><pre>USERNAME       </pre><input size="50" type='text' name='USERNAME' value=''/></div>
+            <div><pre>PASSWORD       </pre><input size="50" type='text' name='PASSWORD' value=''/></div>
+            <div><pre>PORT    </pre><input size="50" type='text' name='PORT' value='{0}' readonly="readonly"/></div>
+            <div><pre>UUID      </pre><input size="50" type='text' name='UUID' value='{1}' readonly="readonly"/></div>
+            <div><br><input type='submit' name='action' value='LAUNCH VM'/></br></div>
+        </form>
+    </body>
+</html>
