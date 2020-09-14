@@ -25,11 +25,13 @@ done
 rm "$(pwd)/BASE/.placeholder"
 rm "$(pwd)/ISOS/.placeholder"
 rm "$(pwd)/VMS/.placeholder"
+rm "$(pwd)/WEBAPP/.placeholder"
+rm "$(pwd)/VMEXE/.placeholder"
 rm -rf "$(pwd)/.git"
 
-cd $(pwd)/BASE
-tar -xzvf ubuntu_16_d_base
-rm ubuntu_16_d_base.tar.gz
-tar -xzvf ubuntu_16_s_base
-rm ubuntu_16_s_base.tar.gz
-cd -
+#cd $(pwd)/BASE
+#tar -xzvf ubuntu_16_d_base
+#rm ubuntu_16_d_base.tar.gz
+#tar -xzvf ubuntu_16_s_base
+#rm ubuntu_16_s_base.tar.gz
+#cd -
