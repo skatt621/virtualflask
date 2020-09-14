@@ -15,16 +15,19 @@ Python/BASH-based web interface for Oracle VM VirtualBox.
     cd /home/ubuntu/VirtualBox_IaC/WEBAPP  
     python3 flaskapp.py  
 
-2. Use the web interface to "Create New VM from ISO". Use the Ubuntu 16.04 Desktop ISO and use the name "Ubuntu_16_D_BASE".
-3. Change the username to "msudo".
-4. Change the password to "pass".
-5. Install OpenSSH server and enable/start it.
-6. Allow password log in as well as root SSH.
-7. Power off the VM from the commandline like this:  
+2. Use the web interface to "Create New VM from ISO". Use the Ubuntu 16.04.07 Desktop ISO and use the name "ubuntu_16_d_base".
+3. Login to the new VM over RDP.
+4. Change the username to "msudo".
+5. Change the password to "pass".
+6. Install OpenSSH server and enable/start it.
+7. Allow password log in as well as root SSH.
+8. Power off the VM from the commandline like this:  
     sudo shutdown 0  
 
-8. Copy the VM files to the BASE directory like this:  
+9. Copy the VM files to the BASE directory like this:  
     cp -R ../VMS/Ubuntu_16_D_BASE ../BASE/Ubuntu_16_D_BASE  
 
-9. Use the delete VM script to delete the VM from the VMS directory.  
+10. Use the delete VM script to delete the VM from the VMS directory.  
     ../VMEXE/dvm.sh Ubuntu_16_D_BASE
+
+11.  **ALTERNATIVELY** Download the tar archive "bases.tar.gz" from <Google Drive link>, place in the BASES directory, and extract.
