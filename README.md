@@ -8,11 +8,9 @@ Python/BASH-based web interface for Oracle VM VirtualBox.
 4. sudo chown -R ubuntu:ubuntu /home/ubuntu/VirtualBox_IaC
 5. cd VirtualBox_IaC
 6. ./installer.sh /home/ubuntu/VirtualBox_IaC {IP Address} 8080 21000 29000
+7. **REMINDER:** Place some iso files in the ISOS folder and edit the dictionaries at the top of flaskapp.py accordingly.
 
-### REMINDER
-1. Place some iso files in the ISOS folder and edit the dictionaries at the top of flaskapp.py accordingly.
-
-### Initial Instructions
+## Initial Instructions
 1. Change to the WEBAPP directory and run flaskapp.py like this:  
     cd /home/ubuntu/VirtualBox_IaC/WEBAPP  
     python3 flaskapp.py  
