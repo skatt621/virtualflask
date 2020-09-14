@@ -26,6 +26,7 @@ rm "$(pwd)/BASE/.placeholder"
 rm "$(pwd)/ISOS/.placeholder"
 rm "$(pwd)/VMS/.placeholder"
 rm "$(pwd)/WEBAPP/.placeholder"
+rm "$(pwd)/WEBAPP/static/.placeholder"
 rm "$(pwd)/VMEXE/.placeholder"
 rm -rf "$(pwd)/.git"
 
