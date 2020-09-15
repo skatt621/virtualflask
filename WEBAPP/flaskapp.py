@@ -354,12 +354,12 @@ def edit():
         subprocess.run("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "Poweron":
-        subprocess.run("vboxmanage startvm \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("vboxmanage startvm \"{0}\" --type headless > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "Poweroff":
         subprocess.run("vboxmanage controlvm \"{0}\" poweroff > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
-    return redirect("/")
+    return redirect("/select")
  
 if __name__ == "__main__":
     # Making a session key for each user to set session tokens correctly
