@@ -241,11 +241,11 @@ def copy():
     contents = f.read().strip()
     f.close()
     contents = contents.split("\n")
-    for det in contents:
-        try:
-            det = det.split(": ")[1]
-        except:
-            det = det
+    for j in range(0, len(contents)): 
+        try: 
+            contents[j] = contents[j].split(": ")[1] 
+        except: 
+            contents[j] = contents[j]
 
     type = contents[3]
     mode = contents[7]
@@ -317,16 +317,15 @@ def select():
         contents = f.read().strip()
         f.close()
         contents = contents.split("\n")
-
-        for det in contents:
-            try:
-                det = det.split(": ")[1]
-            except:
-                det = det
+        for j in range(0, len(contents)): 
+            try:  
+                contents[j] = contents[j].split(": ")[1] 
+            except: 
+                contents[j] = contents[j]
     #############
 
-        state=(contents[1].split(": ")[1]).strip()
-        running = False
+        state=contents[1]
+        started = False
 
         p = subprocess.run("vboxmanage list runningvms | awk -F ' ' '{ print $1 }' | sed 's/\"//g' > file; cat file | tr '\n' '|' | sed 's/\(.*\)|/\\1 /'; rm file", shell = True, stdout=subprocess.PIPE)
         runlist = p.stdout.decode("utf-8").split("|")
@@ -334,10 +333,10 @@ def select():
             runlist[j] = runlist[j].strip()
 
         if i in runlist:
-            running = True
+            started = True
 
         if state == "RUNNING":
-            if running:
+            if started:
                 list_html += """
                              <h3> <a href={0}>{1}</a> </h3>
                              <form action="/edit">
