@@ -171,11 +171,9 @@ def create():
     if 'online' not in list(session.keys()):
         return redirect("/")
 
-    # Resetting error token and adding to it as necessary before forcing back to creation page
-    #session['error_iso'] = ""
-    #
-    #if (not request.args.get('NAME').isalnum()):
-    #    session['error_iso'] += "INVALID NAME {0} : USE ONLY ALPHANUMERIC".format(request.args.get('NAME'))
+    vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
+    if slugify(request.args.get('NAME')) not in vm_dlist:
+        session['error_iso'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
     if session['error_iso'] != "":
         return redirect("/iso")
@@ -217,18 +215,11 @@ def copy():
     if 'online' not in list(session.keys()):
         return redirect("/")
 
-    # Resetting error token and adding to it as necessary before forcing back to creation page
-    #session['error_base'] = ""
-    #
-    #if (not request.args.get('NAME').isalnum()):
-    #    session['error_base'] += "INVALID NAME {0} : USE ONLY ALPHANUMERIC".format(request.args.get('NAME'))
-    #
-    #if (not request.args.get('USERNAME').isalnum()):
-    #    session['error_base'] += "INVALID USERNAME {0} : USE ONLY ALPHANUMERIC".format(request.args.get('USERNAME'))
-    #
-    #if (not request.args.get('PASSWORD').isalnum()):
-    #    session['error_base'] += "INVALID PASSWORD {0} : USE ONLY ALPHANUMERIC".format(request.args.get('PASSWORD'))
-    #
+    session['error_iso'] = ""
+
+    vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
+    if slugify(request.args.get('NAME')) not in vm_dlist:
+        session['error_iso'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
     if session['error_base'] != "":
         return redirect("/base")
