@@ -1,7 +1,6 @@
 #!/bin/bash
 # $1 = IP address, $2 = web port, $3 = port range lower bound, $4 = port range upper bound
 set -e
-set -x
 
 sudo apt-get update -y
 sudo apt-get install python3-pip -y
@@ -29,10 +28,3 @@ rm "$(pwd)/WEBAPP/.placeholder"
 rm "$(pwd)/WEBAPP/static/.placeholder"
 rm "$(pwd)/VMEXE/.placeholder"
 rm -rf "$(pwd)/.git"
-
-#cd $(pwd)/BASE
-#tar -xzvf ubuntu_16_d_base
-#rm ubuntu_16_d_base.tar.gz
-#tar -xzvf ubuntu_16_s_base
-#rm ubuntu_16_s_base.tar.gz
-#cd -

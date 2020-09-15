@@ -325,9 +325,9 @@ def select():
                          <h3> <a href={0}>{1}</a> </h3>
                          <form action="/edit">
                              <input type='hidden' name='NAME' value='{1}'/>
-                             <input type='submit' name='ACTION' value='Poweron'/>
-                             <input type='submit' name='ACTION' value='Poweroff'/>
-                             <input type='submit' name='ACTION' value='Delete'/>
+                             <button type='submit' name='ACTION' value='poweron'>Power on</button>
+                             <button type='submit' name='ACTION' value='poweroff'>Power off</button>
+                             <button type='submit' name='ACTION' value='delete'>DELETE</button>
                          </form>
                          <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
         else:
@@ -350,13 +350,13 @@ def edit():
     action = request.args.get('ACTION')
     name = request.args.get('NAME')
 
-    if action == "Delete":
+    if action == "delete":
         subprocess.run("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
-    if action == "Poweron":
+    if action == "poweron":
         subprocess.run("vboxmanage startvm \"{0}\" --type headless >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
-    if action == "Poweroff":
+    if action == "poweroff":
         subprocess.run("vboxmanage controlvm \"{0}\" poweroff >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     return redirect("/select")
