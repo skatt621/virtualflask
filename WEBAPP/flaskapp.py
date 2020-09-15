@@ -325,8 +325,8 @@ def select():
                          <h3> <a href={0}>{1}</a> </h3>
                          <form action="/edit">
                              <input type='hidden' name='NAME' value='{1}'/>
-                             <input type='submit' name='ACTION' value='Poweron'>
-                             <input type='submit' name='ACTION' value='Poweroff'>
+                             <input type='submit' name='ACTION' value='Poweron'/>
+                             <input type='submit' name='ACTION' value='Poweroff'/>
                              <input type='submit' name='ACTION' value='Delete'/>
                          </form>
                          <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
