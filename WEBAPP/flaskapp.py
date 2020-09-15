@@ -351,13 +351,13 @@ def edit():
     name = request.args.get('NAME')
 
     if action == "Delete":
-        subprocess.Popen("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "Poweron":
-        subprocess.Popen("vboxmanage startvm \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("vboxmanage startvm \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "Poweroff":
-        subprocess.Popen("vboxmanage controlvm \"{0}\" poweroff > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("vboxmanage controlvm \"{0}\" poweroff > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     return redirect("/")
  
