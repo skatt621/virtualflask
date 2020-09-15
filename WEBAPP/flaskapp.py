@@ -173,7 +173,7 @@ def create():
 
     session['error_iso'] = ""
     vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
-    if slugify(request.args.get('NAME')) not in vm_dlist:
+    if slugify(request.args.get('NAME')) in vm_dlist:
         session['error_iso'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
     if session['error_iso'] != "":
@@ -219,7 +219,7 @@ def copy():
     session['error_base'] = ""
 
     vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
-    if slugify(request.args.get('NAME')) not in vm_dlist:
+    if slugify(request.args.get('NAME')) in vm_dlist:
         session['error_base'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
     if session['error_base'] != "":
