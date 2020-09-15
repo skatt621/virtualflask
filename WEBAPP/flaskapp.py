@@ -236,13 +236,20 @@ def copy():
     password = slugify(request.args.get('PASSWORD'))
 
     # Getting information from template VM files for certain script arguments
+    #############
     f = open("{{{DIREC}}}/BASE/{0}/details.txt".format(base), 'r')
     contents = f.read().strip()
     f.close()
     contents = contents.split("\n")
+    for det in contents:
+        try:
+            det = det.split(": ")[1]
+        except:
+            det = det
 
     type = contents[3]
-    mode = contents[9]
+    mode = contents[7]
+    #############
 
     # Setting various session tokens to be used by the "down" function; displayed to user
     session['name'] = name
@@ -305,10 +312,18 @@ def select():
 
     # For every VM available, checking the "State" in each details file to evaluate if it is running before presenting an RDP download/SSH connection option
     for i in vm_dlist:
+    #############
         f = open("{{{DIREC}}}/VMS/{0}/details.txt".format(i), 'r')
         contents = f.read().strip()
         f.close()
         contents = contents.split("\n")
+
+        for det in contents:
+            try:
+                det = det.split(": ")[1]
+            except:
+                det = det
+    #############
 
         state=(contents[1].split(": ")[1]).strip()
         running = False
