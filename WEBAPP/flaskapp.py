@@ -321,7 +321,7 @@ def select():
         state=(contents[1].split(": ")[1]).strip()
 
         if state == "RUNNING":
-            list_html += "
+            list_html += """
                          <h3> <a href={0}>{1}</a> </h3>
                          <form>
                              <input type='hidden' name='NAME' value='{1}'/>
@@ -329,11 +329,11 @@ def select():
                              <h4> <a href='/poweroff'>Power off</a> </h4>
                              <h4> <a href='/delete'>DELETE</a> </h4>
                          </form>
-                         <br> </br>".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
+                         <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
         else:
-            list_html += "
+            list_html += """
                          <h3>{0}</h3>
-                         <br></br>".format(i + " (CURRENTLY PROVISIONING)")
+                         <br></br>""".format(i + " (CURRENTLY PROVISIONING)")
 
     # Formatting and returning HTML
     f = open('select.html', 'r')
