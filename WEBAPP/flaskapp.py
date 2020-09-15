@@ -171,6 +171,7 @@ def create():
     if 'online' not in list(session.keys()):
         return redirect("/")
 
+    session['error_iso'] = ""
     vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
     if slugify(request.args.get('NAME')) not in vm_dlist:
         session['error_iso'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
@@ -215,11 +216,11 @@ def copy():
     if 'online' not in list(session.keys()):
         return redirect("/")
 
-    session['error_iso'] = ""
+    session['error_base'] = ""
 
     vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
     if slugify(request.args.get('NAME')) not in vm_dlist:
-        session['error_iso'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
+        session['error_base'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
     if session['error_base'] != "":
         return redirect("/base")
