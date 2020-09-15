@@ -311,17 +311,37 @@ def select():
         contents = contents.split("\n")
 
         state=(contents[1].split(": ")[1]).strip()
+        running = False
+
+        p = subprocess.run("vboxmanage list runningvms | awk -F ' ' '{ print $1 }' | sed 's/\"//g' > file; cat file | tr '\n' '|' | sed 's/\(.*\)|/\\1 /'; rm file", shell = True, stdout=subprocess.PIPE)
+        runlist = p.stdout.decode("utf-8").split("|")
+        for j in range(0, len(runlist)):
+            runlist[j] = runlist[j].strip()
+
+        if i in runlist:
+            running = True
 
         if state == "RUNNING":
-            list_html += """
-                         <h3> <a href={0}>{1}</a> </h3>
-                         <form action="/edit">
-                             <input type='hidden' name='NAME' value='{1}'/>
-                             <button type='submit' name='ACTION' value='poweron'>Power on</button>
-                             <button type='submit' name='ACTION' value='poweroff'>Power off</button>
-                             <button type='submit' name='ACTION' value='delete'>DELETE</button>
-                         </form>
-                         <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
+            if running:
+                list_html += """
+                             <h3> <a href={0}>{1}</a> </h3>
+                             <form action="/edit">
+                                 <input type='hidden' name='NAME' value='{1}'/>
+                                 <button type='submit' name='ACTION' value='poweron' disabled>Power on</button>
+                                 <button type='submit' name='ACTION' value='poweroff'>Power off</button>
+                                 <button type='submit' name='ACTION' value='delete'>DELETE</button>
+                             </form>
+                             <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
+            else:
+                list_html += """
+                             <h3> <a href={0}>{1}</a> </h3>
+                             <form action="/edit">
+                                 <input type='hidden' name='NAME' value='{1}'/>
+                                 <button type='submit' name='ACTION' value='poweron'>Power on</button>
+                                 <button type='submit' name='ACTION' value='poweroff' disabled>Power off</button>
+                                 <button type='submit' name='ACTION' value='delete'>DELETE</button>
+                             </form>
+                             <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
         else:
             list_html += """
                          <h3>{0}</h3>
