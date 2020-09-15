@@ -196,7 +196,7 @@ def create():
     session['uuid'] = uuid
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
-    subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\"> error_{6}.log 2>&1".format(name, type, iso, port, uuid, mode, name), shell = True, stdout=subprocess.PIPE)
+    subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\">> error_{6}.log 2>&1".format(name, type, iso, port, uuid, mode, name), shell = True, stdout=subprocess.PIPE)
 
     # Creating a directory in the "static" folder and placing an RDP file there to be served
     filename = "/static/{0}/{0}.rdp".format(name)
@@ -261,7 +261,7 @@ def copy():
     session['password'] = password
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
-    subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" > error_{8}.log 2>&1".format(name, type, base, port, uuid, username, password, mode, name), shell = True, stdout=subprocess.PIPE)
+    subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" >> error_{8}.log 2>&1".format(name, type, base, port, uuid, username, password, mode, name), shell = True, stdout=subprocess.PIPE)
 
     while not (os.path.isfile("{{{DIREC}}}/VMS/{0}/details.txt".format(name))):
         time.sleep(1) 
@@ -351,13 +351,13 @@ def edit():
     name = request.args.get('NAME')
 
     if action == "Delete":
-        subprocess.run("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "Poweron":
-        subprocess.run("vboxmanage startvm \"{0}\" --type headless > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("vboxmanage startvm \"{0}\" --type headless >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "Poweroff":
-        subprocess.run("vboxmanage controlvm \"{0}\" poweroff > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("vboxmanage controlvm \"{0}\" poweroff >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     return redirect("/select")
  
