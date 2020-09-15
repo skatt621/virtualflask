@@ -22,9 +22,25 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 # Dictionaries used to translate HTML form arguments into VM creation/copying arguments
 # ! CHANGE THESE BASED ON THE ISOS IN YOUR "ISOS" FOLDER !
 # Values for the first can be found bu running 'VBoxManage list ostypes'
-type_type_dict = {"Ubuntu_16_D":"Ubuntu_64", "Ubuntu_16_S":"Ubuntu_64", "Ubuntu_18_D":"Ubuntu_64", "Ubuntu_18_S":"Ubuntu_64", "Ubuntu_20_D":"Ubuntu_64", "Ubuntu_20_S":"Ubuntu_64"}
-type_iso_dict = {"Ubuntu_16_D":"ubuntu-16.04.7-desktop-amd64.iso", "Ubuntu_16_S":"ubuntu-16.04.7-server-amd64.iso", "Ubuntu_18_D":"ubuntu-18.04.4-desktop-amd64.iso", "Ubuntu_18_S":"ubuntu-18.04.4-live-server-amd64.iso", "Ubuntu_20_D":"ubuntu-20.04.1-desktop-amd64.iso", "Ubuntu_20_S":"ubuntu-20.04.1-live-server-amd64.iso"}
-type_base_dict = {"Ubuntu_16_D":"Ubuntu_16_D_BASE", "Ubuntu_16_S":"Ubuntu_16_S_BASE"}
+type_type_dict = {
+"Ubuntu_16_D":"Ubuntu_64", 
+"Ubuntu_16_S":"Ubuntu_64", 
+"Ubuntu_18_D":"Ubuntu_64", 
+"Ubuntu_18_S":"Ubuntu_64", 
+"Ubuntu_20_D":"Ubuntu_64", 
+"Ubuntu_20_S":"Ubuntu_64"}
+
+type_iso_dict = {
+"Ubuntu_16_D":"ubuntu-16.04.7-desktop-amd64.iso", 
+"Ubuntu_16_S":"ubuntu-16.04.7-server-amd64.iso", 
+"Ubuntu_18_D":"ubuntu-18.04.4-desktop-amd64.iso", 
+"Ubuntu_18_S":"ubuntu-18.04.4-live-server-amd64.iso", 
+"Ubuntu_20_D":"ubuntu-20.04.1-desktop-amd64.iso", 
+"Ubuntu_20_S":"ubuntu-20.04.1-live-server-amd64.iso"}
+
+type_base_dict = {
+"Ubuntu_16_D":"Ubuntu_16_D_BASE", 
+"Ubuntu_16_S":"Ubuntu_16_S_BASE"}
 
 # Setting a port range for serving RDP/SSH connections
 PORT_RANGE = {{{RANGE}}}
@@ -182,7 +198,6 @@ def create():
     # Opening a process to create a VM and waiting to continue before the "details" file is created
     subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\"> error_{6}.log 2>&1".format(name, type, iso, port, uuid, mode, name), shell = True, stdout=subprocess.PIPE)
 
-
     # Creating a directory in the "static" folder and placing an RDP file there to be served
     filename = "/static/{0}/{0}.rdp".format(name)
     filename = filename.format(name)
@@ -292,9 +307,8 @@ def select():
     session['date'] = ""
     session['filename'] = ""
 
-    
     # Getting a list of available VMs
-    vm_list = ""
+    list_html = ""
     vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
 
     # For every VM available, checking the "State" in each details file to evaluate if it is running before presenting an RDP download/SSH connection option
@@ -307,16 +321,61 @@ def select():
         state=(contents[1].split(": ")[1]).strip()
 
         if state == "RUNNING":
-            vm_list += "<a href={0}><h3>{1}</h3></a><br></br>".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
+            list_html += "
+                         <h3> <a href={0}>{1}</a> </h3>
+                         <form>
+                             <input type='hidden' name='NAME' value='{1}'/>
+                             <h4> <a href='/poweron'>Power on</a> </h4>
+                             <h4> <a href='/poweroff'>Power off</a> </h4>
+                             <h4> <a href='/delete'>DELETE</a> </h4>
+                         </form>
+                         <br> </br>".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
         else:
-            vm_list += "<h3>{0}</h3><br></br>".format(i + " (CURRENTLY PROVISIONING)")
+            list_html += "
+                         <h3>{0}</h3>
+                         <br></br>".format(i + " (CURRENTLY PROVISIONING)")
 
     # Formatting and returning HTML
     f = open('select.html', 'r')
     html = f.read()
     f.close()
-    return html.format(vm_list)
+    return html.format(list_html)
 
+@app.route('/delete', methods=['GET', 'POST'])
+def delete():
+    # Check to force redirection to "/" before any other page is displayed
+    if 'online' not in list(session.keys()):
+        return redirect("/")
+    
+    name = request.args.get('NAME')
+    session['name'] = name
+    subprocess.Popen("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+
+    redirect("/")
+ 
+@app.route('/poweron', methods=['GET', 'POST'])
+def poweron():
+    # Check to force redirection to "/" before any other page is displayed
+    if 'online' not in list(session.keys()):
+        return redirect("/")
+    
+    name = request.args.get('NAME')
+    session['name'] = name
+    subprocess.Popen("vboxmanage startvm \"{0}\"".format(name), shell = True, stdout=subprocess.PIPE)
+
+    redirect("/")
+
+@app.route('/poweroff', methods=['GET', 'POST'])
+def poweroff():
+    # Check to force redirection to "/" before any other page is displayed
+    if 'online' not in list(session.keys()):
+        return redirect("/")
+    
+    name = request.args.get('NAME')
+    session['name'] = name
+    subprocess.Popen("vboxmanage controlvm \"{0}\" poweroff".format(name), shell = True, stdout=subprocess.PIPE)
+
+    redirect("/")
 
 if __name__ == "__main__":
     # Making a session key for each user to set session tokens correctly
