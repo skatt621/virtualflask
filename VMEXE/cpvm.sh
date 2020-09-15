@@ -12,14 +12,14 @@ echo "VM CREATED"
 touch {{{DIREC}}}/VMS/$1/details.txt
 echo "====DETAILS====" > {{{DIREC}}}/VMS/$1/details.txt
 echo "STATE: PROVISIONING" >> {{{DIREC}}}/VMS/$1/details.txt
-echo "$1" >> {{{DIREC}}}/VMS/$1/details.txt
-echo "$2" >> {{{DIREC}}}/VMS/$1/details.txt
-echo "$3" >> {{{DIREC}}}/VMS/$1/details.txt
-echo "$4" >> {{{DIREC}}}/VMS/$1/details.txt
-echo "$5" >> {{{DIREC}}}/VMS/$1/details.txt
-echo "$6" >> {{{DIREC}}}/VMS/$1/details.txt
-echo "$7" >> {{{DIREC}}}/VMS/$1/details.txt
-echo "$8" >> {{{DIREC}}}/VMS/$1/details.txt
+echo "VM name: $1" >> {{{DIREC}}}/VMS/$1/details.txt
+echo "OS type: $2" >> {{{DIREC}}}/VMS/$1/details.txt
+echo "VM base type: $3" >> {{{DIREC}}}/VMS/$1/details.txt
+echo "VRDE port: $4" >> {{{DIREC}}}/VMS/$1/details.txt
+echo "UUID: $5" >> {{{DIREC}}}/VMS/$1/details.txt
+echo "Username: $6" >> {{{DIREC}}}/VMS/$1/details.txt
+echo "Password: $7" >> {{{DIREC}}}/VMS/$1/details.txt
+echo "Connection mode: $8" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "================="
 echo "DETAILS RECORDED"
 
