@@ -359,7 +359,7 @@ def edit():
     if action == "Poweroff":
         subprocess.Popen("vboxmanage controlvm \"{0}\" poweroff > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
-    redirect("/")
+    return redirect("/")
  
 if __name__ == "__main__":
     # Making a session key for each user to set session tokens correctly
