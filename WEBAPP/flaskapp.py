@@ -323,11 +323,11 @@ def select():
         if state == "RUNNING":
             list_html += """
                          <h3> <a href={0}>{1}</a> </h3>
-                         <form>
+                         <form action="/edit">
                              <input type='hidden' name='NAME' value='{1}'/>
-                             <h4> <a href='/poweron'>Power on</a> </h4>
-                             <h4> <a href='/poweroff'>Power off</a> </h4>
-                             <h4> <a href='/delete'>DELETE</a> </h4>
+                             <input type='submit' name='ACTION' value='poweron'>Power on</input>
+                             <input type='submit' name='ACTION' value='poweroff'>Power off</input>
+                             <input type='submit' name='ACTION' value='delete'/>DELETE</input>
                          </form>
                          <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
         else:
@@ -341,42 +341,25 @@ def select():
     f.close()
     return html.format(list_html)
 
-@app.route('/delete', methods=['GET', 'POST'])
-def delete():
+@app.route('/edit', methods=['GET', 'POST'])
+def edit():
     # Check to force redirection to "/" before any other page is displayed
     if 'online' not in list(session.keys()):
         return redirect("/")
     
-    name = request.args.get('NAME')
-    session['name'] = name
-    subprocess.Popen("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+    action = request.args.get('ACTION')
+
+    if action == "delete":
+        subprocess.Popen("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" > /dev/null 2>&1".format(action), shell = True, stdout=subprocess.PIPE)
+
+    if action == "poweron":
+        subprocess.Popen("vboxmanage startvm \"{0}\" > /dev/null 2>&1".format(action), shell = True, stdout=subprocess.PIPE)
+
+    if action == "poweroff":
+        subprocess.Popen("vboxmanage controlvm \"{0}\" poweroff > /dev/null 2>&1".format(action), shell = True, stdout=subprocess.PIPE)
 
     redirect("/")
  
-@app.route('/poweron', methods=['GET', 'POST'])
-def poweron():
-    # Check to force redirection to "/" before any other page is displayed
-    if 'online' not in list(session.keys()):
-        return redirect("/")
-    
-    name = request.args.get('NAME')
-    session['name'] = name
-    subprocess.Popen("vboxmanage startvm \"{0}\"".format(name), shell = True, stdout=subprocess.PIPE)
-
-    redirect("/")
-
-@app.route('/poweroff', methods=['GET', 'POST'])
-def poweroff():
-    # Check to force redirection to "/" before any other page is displayed
-    if 'online' not in list(session.keys()):
-        return redirect("/")
-    
-    name = request.args.get('NAME')
-    session['name'] = name
-    subprocess.Popen("vboxmanage controlvm \"{0}\" poweroff".format(name), shell = True, stdout=subprocess.PIPE)
-
-    redirect("/")
-
 if __name__ == "__main__":
     # Making a session key for each user to set session tokens correctly
     app.secret_key = os.urandom(12)
