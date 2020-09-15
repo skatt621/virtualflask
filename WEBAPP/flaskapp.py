@@ -325,9 +325,9 @@ def select():
                          <h3> <a href={0}>{1}</a> </h3>
                          <form action="/edit">
                              <input type='hidden' name='NAME' value='{1}'/>
-                             <input type='submit' name='ACTION' value='poweron'>Power on</input>
-                             <input type='submit' name='ACTION' value='poweroff'>Power off</input>
-                             <input type='submit' name='ACTION' value='delete'/>DELETE</input>
+                             <input type='submit' name='ACTION' value='Poweron'>
+                             <input type='submit' name='ACTION' value='Poweroff'>
+                             <input type='submit' name='ACTION' value='Delete'/>
                          </form>
                          <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
         else:
@@ -348,15 +348,16 @@ def edit():
         return redirect("/")
     
     action = request.args.get('ACTION')
+    name = request.args.get('NAME')
 
-    if action == "delete":
-        subprocess.Popen("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" > /dev/null 2>&1".format(action), shell = True, stdout=subprocess.PIPE)
+    if action == "Delete":
+        subprocess.Popen("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
-    if action == "poweron":
-        subprocess.Popen("vboxmanage startvm \"{0}\" > /dev/null 2>&1".format(action), shell = True, stdout=subprocess.PIPE)
+    if action == "Poweron":
+        subprocess.Popen("vboxmanage startvm \"{0}\" > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
-    if action == "poweroff":
-        subprocess.Popen("vboxmanage controlvm \"{0}\" poweroff > /dev/null 2>&1".format(action), shell = True, stdout=subprocess.PIPE)
+    if action == "Poweroff":
+        subprocess.Popen("vboxmanage controlvm \"{0}\" poweroff > /dev/null 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     redirect("/")
  
