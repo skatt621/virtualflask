@@ -48,16 +48,14 @@ VBoxManage startvm $1 --type headless
 
 if [ $2 = "Ubuntu_64" ]
 then
-    /home/clouduser/VirtualBox_IaC/VMEXE/sshvm.sh $1 $6 $7
-    cat /home/clouduser/VirtualBox_IaC/VMS/$1/details.txt | sed "s/STATE: PROVISIONING/STATE: RUNNING/g" > /home/clouduser/VirtualBox_IaC/VMS/$1/details2.txt
-    cat /home/clouduser/VirtualBox_IaC/VMS/$1/details2.txt > /home/clouduser/VirtualBox_IaC/VMS/$1/details.txt
-    rm /home/clouduser/VirtualBox_IaC/VMS/$1/details2.txt
+    {{{DIREC}}}/VMEXE/sshvm.sh $1 $6 $7
+    sed -i "s/STATE: PROVISIONING/STATE: RUNNING/g" {{{DIREC}}}/VMS/$1/details.txt
 fi
 
 if [ $2 = "Windows10_64" ]
 then
     # Not implemented
-    /home/clouduser/VirtualBox_IaC/VMEXE/sshvm-win.sh $1 $6 $7
+    {{{DIREC}}}/VMEXE/sshvm-win.sh $1 $6 $7
 fi
 echo "================="
 echo "VM PROVISIONED AND DETAILS ADDED"
