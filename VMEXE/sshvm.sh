@@ -1,5 +1,6 @@
 #!/bin/bash
 # $1 = VM name, $2 = username, $3 = password
+set -x
 
 echo "PROVISIONING STEPS"
 echo "$1"

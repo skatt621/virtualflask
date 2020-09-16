@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 
 for var in "$@"
 do
