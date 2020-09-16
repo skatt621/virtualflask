@@ -60,3 +60,5 @@ cat {{{DIREC}}}/VMS/$1/details2.txt > {{{DIREC}}}/VMS/$1/details.txt
 rm {{{DIREC}}}/VMS/$1/details2.txt
 echo "================="
 echo "DETAILS ADDED"
+
+rm "{{{DIREC}}}/WEBAPP/error_$1.log"
