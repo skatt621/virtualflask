@@ -1,12 +1,12 @@
 #!/bin/bash
-# $1 = name, $2 = type, $3 = base, $4 = port, $5 = uuid, $6 = username, $7 = password, $8 = mode
+# $1 = name, $2 = type, $3 = base, $4 = port, $5 = uuid, $6 = username, $7 = password, $8 = mode, $9 = mem
 set -x
 
 # ==============================================
 # ==============================================
 
 VBoxManage createvm --basefolder "{{{DIREC}}}/VMS" --name $1 --uuid=$5 --ostype $2 --register
-VBoxManage modifyvm $1 --cpus 1 --memory 1024 --vram 12
+VBoxManage modifyvm $1 --cpus 1 --memory $9 --vram 12
 echo "================="
 echo "VM CREATED"
 

@@ -177,10 +177,10 @@ def create():
         session['error_iso'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
     if int(request.args.get('HDRIVE')) < 10000:
-        session['error_iso'] += "INVALID HARD DRIVE SIZE {0} : SIZE LESS THAN 10000 MB (10 GB) NOT ADVISED.".format(request.args.get('HDRIVE'))
+        session['error_iso'] += "INVALID HARD DRIVE SIZE {0} MB : SIZE LESS THAN 10000 MB (10 GB) NOT ADVISED.".format(request.args.get('HDRIVE'))
 
     if int(request.args.get('MEM')) < 512:
-        session['error_iso'] += "INVALID MEMORY SIZE {0} : SIZE LESS THAN 512MB (0.5 GB) NOT ADVISED.".format(request.args.get('MEM'))
+        session['error_iso'] += "INVALID MEMORY SIZE {0} MB : SIZE LESS THAN 512 MB (0.5 GB) NOT ADVISED.".format(request.args.get('MEM'))
 
     if session['error_iso'] != "":
         return redirect("/iso")
@@ -230,18 +230,21 @@ def copy():
     if slugify(request.args.get('NAME')) in vm_dlist:
         session['error_base'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
+    if int(request.args.get('MEM')) < 512:
+        session['error_iso'] += "INVALID MEMORY SIZE {0} MB : SIZE LESS THAN 512 MB (0.5 GB) NOT ADVISED.".format(request.args.get('MEM'))
+
     if session['error_base'] != "":
         return redirect("/base")
 
     # Arguments to be used by the VM creation script
     ipadd = "{{{ADDRESS}}}"
     name = slugify(request.args.get('NAME'))
-    #base = type_base_dict[request.args.get('TYPE')]
     base = request.args.get('TYPE')
     port = request.args.get('PORT')
     uuid = request.args.get('UUID')
     username = slugify(request.args.get('USERNAME'))
     password = slugify(request.args.get('PASSWORD'))
+    mem = request.args.get('MEM')
 
     # Getting information from template VM files for certain script arguments
     #############
@@ -268,7 +271,7 @@ def copy():
     session['password'] = password
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
-    subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" >> error_{8}.log 2>&1".format(name, type, base, port, uuid, username, password, mode, name), shell = True, stdout=subprocess.PIPE)
+    subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" >\"{8}\" > error_{8}.log 2>&1".format(name, type, base, port, uuid, username, password, mode, name), shell = True, stdout=subprocess.PIPE)
 
     while not (os.path.isfile("{{{DIREC}}}/VMS/{0}/details.txt".format(name))):
         time.sleep(1) 
