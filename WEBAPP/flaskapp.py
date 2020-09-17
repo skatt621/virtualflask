@@ -231,7 +231,7 @@ def copy():
         session['error_base'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
     if int(request.args.get('MEM')) < 512:
-        session['error_iso'] += "INVALID MEMORY SIZE {0} MB : SIZE LESS THAN 512 MB (0.5 GB) NOT ADVISED.".format(request.args.get('MEM'))
+        session['error_base'] += "INVALID MEMORY SIZE {0} MB : SIZE LESS THAN 512 MB (0.5 GB) NOT ADVISED.".format(request.args.get('MEM'))
 
     if session['error_base'] != "":
         return redirect("/base")
