@@ -28,7 +28,8 @@ do
     ssh -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5 -o PubkeyAuthentication=no -o PasswordAuthentication=no -o KbdInteractiveAuthentication=no -o ChallengeResponseAuthentication=no -p $elporto 127.0.0.1 2>&1 | fgrep -q "Permission denied"
 done
 echo "done trying"
-sshpass -f ./pass ssh -p $elporto "root@127.0.0.1" -oStrictHostKeyChecking=no "echo 'msudo:$3' | chpasswd; usermod -l $2 msudo; chfn -f $2 $2; usermod -d /home/$2 -m $2; hostnamectl set-hostname $1; sed -i 's/^PermitRootLogin yes/PermitRootLogin prohibit-password/g' /etc/ssh/sshd_config; sed -i 's/^PasswordAuthentication yes/#PasswordAuthentication yes/g' /etc/ssh/sshd_config; exit"
+
+sshpass -f ./pass ssh -p $elporto "root@127.0.0.1" -oStrictHostKeyChecking=no "bash -s" < {{{DIREC}}}/VMEXE/userpasshostssh.sh "$1" "$2" "$3"
 
 rm pass
 echo "############6"
