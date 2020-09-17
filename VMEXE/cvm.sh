@@ -1,12 +1,12 @@
 #!/bin/bash
-# $1 = name, $2 = type, $3 = isopath, $4 = port, $5 = uuid $6 = mode
+# $1 = name, $2 = type, $3 = isopath, $4 = port, $5 = uuid $6 = mode, $7 = hddrive in megabytes, $8 = memory in megabytes
 set -x
 
 # ==============================================
 # ==============================================
 
 VBoxManage createvm --basefolder "{{{DIREC}}}/VMS" --name $1 --uuid=$5 --ostype $2 --register
-VBoxManage modifyvm $1 --cpus 1 --memory 1024 --vram 12
+VBoxManage modifyvm $1 --cpus 1 --memory $8 --vram 12
 echo "================="
 echo "VM CREATED"
 
@@ -22,7 +22,7 @@ echo "Connection mode: $6" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "================="
 echo "DETAILS RECORDED"
 
-VBoxManage createhd --filename "{{{DIREC}}}/VMS/$1/$1.vdi" --size 10000 --variant Standard
+VBoxManage createhd --filename "{{{DIREC}}}/VMS/$1/$1.vdi" --size $7 --variant Standard
 VBoxManage storagectl $1 --name "SATA Controller" --add sata --bootable on
 VBoxManage storageattach $1 --storagectl "SATA Controller" --port 0 --device 0 --type hdd --medium "{{{DIREC}}}/VMS/$1/$1.vdi"
 echo "================="
