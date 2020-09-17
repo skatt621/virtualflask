@@ -176,6 +176,12 @@ def create():
     if slugify(request.args.get('NAME')) in vm_dlist:
         session['error_iso'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
+    if int(request.args.get('HDRIVE')) < 10000:
+        session['error_iso'] += "INVALID HARD DRIVE SIZE {0} : SIZE LESS THAN 10000 MB (10 GB) NOT ADVISED.".format(request.args.get('HDRIVE'))
+
+    if int(request.args.get('MEM')) < 512:
+        session['error_iso'] += "INVALID MEMORY SIZE {0} : SIZE LESS THAN 512MB (0.5 GB) NOT ADVISED.".format(request.args.get('MEM'))
+
     if session['error_iso'] != "":
         return redirect("/iso")
 
