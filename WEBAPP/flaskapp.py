@@ -271,7 +271,7 @@ def copy():
     session['password'] = password
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
-    subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" > error_{8}.log 2>&1".format(name, type, base, port, uuid, username, password, mode, mem), shell = True, stdout=subprocess.PIPE)
+    subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" > error_{0}.log 2>&1".format(name, type, base, port, uuid, username, password, mode, mem), shell = True, stdout=subprocess.PIPE)
 
     while not (os.path.isfile("{{{DIREC}}}/VMS/{0}/details.txt".format(name))):
         time.sleep(1) 
