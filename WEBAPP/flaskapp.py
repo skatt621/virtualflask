@@ -187,6 +187,8 @@ def create():
     iso = type_iso_dict[request.args.get('TYPE')]
     port = request.args.get('PORT')
     uuid = request.args.get('UUID')
+    hdrive = request.args.get('HDRIVE')
+    mem = request.args.get('MEM')
 
     # Setting various session tokens to be used by the "down" function; displayed to user
     session['name'] = name
@@ -195,7 +197,7 @@ def create():
     session['uuid'] = uuid
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
-    subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"10000\" \"1024\">> error_{6}.log 2>&1".format(name, type, iso, port, uuid, mode, name), shell = True, stdout=subprocess.PIPE)
+    subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\">> error_{6}.log 2>&1".format(name, type, iso, port, uuid, mode, name, hdrive, mem), shell = True, stdout=subprocess.PIPE)
 
     # Creating a directory in the "static" folder and placing an RDP file there to be served
     filename = "/static/{0}/{0}.rdp".format(name)
