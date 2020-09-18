@@ -15,11 +15,11 @@ service ssh restart
                                                                                  
 sleep 5                                                                          
                                                                                  
+sudo nmcli networking off                                                        
 sudo hostnamectl set-hostname $1                                                 
 sed -i "s/msudo/$1/g" /etc/hosts                                                 
 echo "$1" > /etc/hostname                                                        
 cat /etc/hosts                                                                   
 cat /etc/hostname                                                                
-sudo nmcli networking off                                                        
 sudo nmcli networking on                                                         
 sudo hostnamectl
