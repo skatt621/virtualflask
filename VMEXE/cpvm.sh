@@ -44,6 +44,7 @@ then
     echo "SSH TURNED ON"
 fi
 
+vboxmanage modifyvm "$1" --nic1 NAT
 VBoxManage startvm $1 --type headless
 
 if [ $2 = "Ubuntu_64" ]

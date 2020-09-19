@@ -52,6 +52,7 @@ then
     echo "SSH TURNED ON"
 fi
 
+vboxmanage modifyvm "$1" --nic1 NAT
 VBoxManage startvm $4 --type headless
 echo "================="
 echo "VM STARTED"
