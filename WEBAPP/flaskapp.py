@@ -187,10 +187,6 @@ def create():
     mem = request.args.get('MEM')
 
     # Setting various session tokens to be used by the "down" function; displayed to user
-    session['name'] = name
-    session['type'] = type
-    session['port'] = port
-    session['uuid'] = uuid
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
     subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" >> error_{0}.log 2>&1".format(name, iso, port, uuid, mode, hdrive, mem), shell = True, stdout=subprocess.PIPE)
@@ -229,7 +225,7 @@ def copy():
     # Arguments to be used by the VM creation script
     ipadd = "{{{ADDRESS}}}"
     name = slugify(request.args.get('NAME'))
-    base = request.args.get('TYPE')
+    base = request.args.get('BASE')
     port = request.args.get('PORT')
     uuid = request.args.get('UUID')
     username = slugify(request.args.get('USERNAME'))
@@ -237,7 +233,6 @@ def copy():
     mem = request.args.get('MEM')
 
     # Getting information from template VM files for certain script arguments
-    #############
     f = open("{{{DIREC}}}/BASE/{0}/details.txt".format(base), 'r')
     contents = f.read().strip()
     f.close()
@@ -248,17 +243,9 @@ def copy():
         except: 
             contents[j] = contents[j]
 
-    type = contents[3]
     mode = contents[7]
-    #############
 
     # Setting various session tokens to be used by the "down" function; displayed to user
-    session['name'] = name
-    session['type'] = type
-    session['port'] = port
-    session['uuid'] = uuid
-    session['username'] = username
-    session['password'] = password
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
     subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" > error_{0}.log 2>&1".format(name, type, base, port, uuid, username, password, mode, mem), shell = True, stdout=subprocess.PIPE)
