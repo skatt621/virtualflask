@@ -22,21 +22,6 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 # Dictionaries used to translate HTML form arguments into VM creation/copying arguments
 # ! CHANGE THESE BASED ON THE ISOS IN YOUR "ISOS" FOLDER !
 # Values for the first can be found bu running 'VBoxManage list ostypes'
-type_type_dict = {
-"Ubuntu_16_D":"Ubuntu_64", 
-"Ubuntu_16_S":"Ubuntu_64", 
-"Ubuntu_18_D":"Ubuntu_64", 
-"Ubuntu_18_S":"Ubuntu_64", 
-"Ubuntu_20_D":"Ubuntu_64", 
-"Ubuntu_20_S":"Ubuntu_64"}
-
-type_iso_dict = {
-"Ubuntu_16_D":"ubuntu-16.04.7-desktop-amd64.iso", 
-"Ubuntu_16_S":"ubuntu-16.04.7-server-amd64.iso", 
-"Ubuntu_18_D":"ubuntu-18.04.4-desktop-amd64.iso", 
-"Ubuntu_18_S":"ubuntu-18.04.4-live-server-amd64.iso", 
-"Ubuntu_20_D":"ubuntu-20.04.1-desktop-amd64.iso", 
-"Ubuntu_20_S":"ubuntu-20.04.1-live-server-amd64.iso"}
 
 type_base_dict = {
 "Ubuntu_16_D":"Ubuntu_16_D_BASE", 
@@ -130,11 +115,17 @@ def iso():
     errors.remove("")
     error_msg = ("<br></br>").join(errors)
 
+    iso_html = ""
+    iso_dlist = os.listdir("{{{DIREC}}}/ISOS")
+    iso_dlist.sort()
+    for i in iso_dlist:
+        iso_html += "<option value='{0}'>{0}</option>\n".format(i)
+
     # Formatting and returning HTML
     f = open('iso.html', 'r')
     html = f.read()
     f.close()
-    html = html.format(assigned_port, assigned_uuid , error_msg)
+    html = html.format(assigned_port, assigned_uuid , error_msg, iso_html)
     return html
 
 @app.route('/base', methods=['GET', 'POST'])
@@ -189,8 +180,7 @@ def create():
     ipadd = "{{{ADDRESS}}}"
     name = slugify(request.args.get('NAME'))
     mode = request.args.get('MODE')
-    type = type_type_dict[request.args.get('TYPE')]
-    iso = type_iso_dict[request.args.get('TYPE')]
+    iso = request.args.get('ISO')
     port = request.args.get('PORT')
     uuid = request.args.get('UUID')
     hdrive = request.args.get('HDRIVE')
@@ -203,7 +193,7 @@ def create():
     session['uuid'] = uuid
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
-    subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\">> error_{6}.log 2>&1".format(name, type, iso, port, uuid, mode, name, hdrive, mem), shell = True, stdout=subprocess.PIPE)
+    subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" >> error_{0}.log 2>&1".format(name, iso, port, uuid, mode, hdrive, mem), shell = True, stdout=subprocess.PIPE)
 
     # Creating a directory in the "static" folder and placing an RDP file there to be served
     filename = "/static/{0}/{0}.rdp".format(name)
