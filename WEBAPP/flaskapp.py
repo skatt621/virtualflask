@@ -27,9 +27,6 @@ type_base_dict = {
 "Ubuntu_16_D":"Ubuntu_16_D_BASE", 
 "Ubuntu_16_S":"Ubuntu_16_S_BASE"}
 
-# Setting a port range for serving RDP/SSH connections
-PORT_RANGE = {{{RANGE}}}
-
 # Basic RDP file setup; formatted and saved as a static file then served
 RDP = """
 screen mode id:i:2
@@ -191,6 +188,9 @@ def create():
     # Opening a process to create a VM and waiting to continue before the "details" file is created
     subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" >> error_{0}.log 2>&1".format(name, iso, port, uuid, mode, hdrive, mem), shell = True, stdout=subprocess.PIPE)
 
+    while not (os.path.isfile("{{{DIREC}}}/VMS/{0}/details.txt".format(name))):
+        time.sleep(1) 
+
     # Creating a directory in the "static" folder and placing an RDP file there to be served
     filename = "/static/{0}/{0}.rdp".format(name)
     filename = filename.format(name)
@@ -248,7 +248,7 @@ def copy():
     # Setting various session tokens to be used by the "down" function; displayed to user
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
-    subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" > error_{0}.log 2>&1".format(name, type, base, port, uuid, username, password, mode, mem), shell = True, stdout=subprocess.PIPE)
+    subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" > error_{0}.log 2>&1".format(name, base, port, uuid, username, password, mode, mem), shell = True, stdout=subprocess.PIPE)
 
     while not (os.path.isfile("{{{DIREC}}}/VMS/{0}/details.txt".format(name))):
         time.sleep(1) 
