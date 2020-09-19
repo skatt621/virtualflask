@@ -14,13 +14,13 @@ touch {{{DIREC}}}/VMS/$1/details.txt
 echo "====DETAILS====" > {{{DIREC}}}/VMS/$1/details.txt
 echo "STATE: PROVISIONING" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "VM name: $1" >> {{{DIREC}}}/VMS/$1/details.txt
-echo "OS type: $2" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "VM base type: $2" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "VRDE port: $3" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "UUID: $4" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "Username: $5" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "Password: $6" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "Connection mode: $7" >> {{{DIREC}}}/VMS/$1/details.txt
+echo "Memory size (in MB): $8" >> {{{DIREC}}}/VMS/$1/details.txt
 echo "================="
 echo "DETAILS RECORDED"
 
