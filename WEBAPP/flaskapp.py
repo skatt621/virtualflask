@@ -243,7 +243,7 @@ def copy():
         except: 
             contents[j] = contents[j]
 
-    mode = contents[7]
+    mode = contents[6]
 
     # Setting various session tokens to be used by the "down" function; displayed to user
     
