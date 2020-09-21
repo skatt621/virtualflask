@@ -47,16 +47,11 @@ fi
 vboxmanage modifyvm "$1" --nic1 NAT
 VBoxManage startvm $1 --type headless
 
-if [ $2 = "Ubuntu_64" ]
+if [ $2 = "ubuntu_16_d_base" ]
 then
     {{{DIREC}}}/VMEXE/sshvm.sh $1 $5 $6
     sed -i "s/STATE: PROVISIONING/STATE: RUNNING/g" {{{DIREC}}}/VMS/$1/details.txt
 fi
 
-if [ $2 = "Windows10_64" ]
-then
-    # Not implemented
-    {{{DIREC}}}/VMEXE/sshvm-win.sh $1 $5 $6
-fi
 echo "================="
 echo "VM PROVISIONED AND DETAILS ADDED"
