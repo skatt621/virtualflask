@@ -295,7 +295,6 @@ def down():
     details_html += "<li>Type: <strong>{0}</strong></li>\n".format(session['type'])
     details_html += "<li>Hard drive: <strong>{0} MB</strong></li>\n".format(session['hdrive'])
     details_html += "<li>Memory: <strong>{0} MB</strong></li>\n".format(session['mem'])
-    details_html += "<br></br>"
     details_html += "<li>Port: <strong>{0}</strong></li>\n".format(session['port'])
     details_html += "<li>Connection type: <strong>{0}</strong></li>\n".format(session['conn'])
     
