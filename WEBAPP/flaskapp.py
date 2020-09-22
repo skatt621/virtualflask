@@ -94,6 +94,9 @@ def index():
     session['filename'] = ""
     session['error_iso'] = ""
     session['error_base'] = ""
+    session['hdrive'] = ""
+    session['mem'] = ""
+    session['conn'] = ""
 
     return redirect('/iso')
 
@@ -139,9 +142,7 @@ def base():
 
     # Generating an access port and a UUID to be used in a new template-based VM
     assigned_port = str(getfreeport())
-    assigned_uuid = str(uuid.uuid1())
-
-    # Using flask session tokens to display any errors
+    assigned_uuid = str(uuid.uuid1()) # Using flask session tokens to display any errors
     errors = session['error_base'].split("INVALID")
     errors.remove("")
     error_msg = ("<br></br>").join(errors)
@@ -184,6 +185,14 @@ def create():
     mem = request.args.get('MEM')
 
     # Setting various session tokens to be used by the "down" function; displayed to user
+    session['name'] = name
+    session['type'] = iso
+    session['hdrive'] = hdrive
+    session['mem'] = mem
+    session['port'] = port
+    session['conn'] = "RDP"
+    session['username'] = ""
+    session['password'] = ""
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
     subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" >> error_{0}.log 2>&1".format(name, iso, port, uuid, mode, hdrive, mem), shell = True, stdout=subprocess.PIPE)
@@ -243,9 +252,18 @@ def copy():
         except: 
             contents[j] = contents[j]
 
+    hdrive = contents[7]
     mode = contents[6]
 
     # Setting various session tokens to be used by the "down" function; displayed to user
+    session['name'] = name
+    session['type'] = base
+    session['hdrive'] = hdrive
+    session['mem'] = mem
+    session['port'] = port
+    session['conn'] = mode
+    session['username'] = username
+    session['password'] = password
     
     # Opening a process to create a VM and waiting to continue before the "details" file is created
     subprocess.Popen("{{{DIREC}}}/VMEXE/cpvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" > error_{0}.log 2>&1".format(name, base, port, uuid, username, password, mode, mem), shell = True, stdout=subprocess.PIPE)
@@ -272,11 +290,24 @@ def down():
     if 'online' not in list(session.keys()):
         return redirect("/") 
 
+    details_html = ""
+    details_html += "<li>Name: <strong>{0}</strong></li>\n".format(session['name'])
+    details_html += "<li>Type: <strong>{0}</strong></li>\n".format(session['type'])
+    details_html += "<li>Hard drive: <strong>{0} MB</strong></li>\n".format(session['hdrive'])
+    details_html += "<li>Memory: <strong>{0} MB</strong></li>\n".format(session['mem'])
+    details_html += "<br></br>"
+    details_html += "<li>Port: <strong>{0}</strong></li>\n".format(session['port'])
+    details_html += "<li>Connection type: <strong>{0}</strong></li>\n".format(session['conn'])
+    
+    if session['username'] != "":
+        details_html += "<li>Username: <strong>{0}</strong></li>\n".format(session['username'])
+        details_html += "<li>Password: <strong>{0}</strong></li>\n".format(session['password'])
+
     # Formatting and returning HTML using session tokens
     f = open('down.html', 'r')
     html = f.read()
     f.close()
-    return html.format(session['name'], session['type'], session['port'], session['uuid'], session['username'], session['password']) 
+    return html.format(details_html) 
 
 @app.route('/select', methods=['GET', 'POST'])
 def select():
@@ -286,6 +317,7 @@ def select():
     
     # Resetting session tokens so moving to other pages from the select page doesn't crash 
     session['name'] = ""
+    session['mode'] = ""
     session['uuid'] = ""
     session['port'] = ""
     session['username'] = ""
@@ -293,6 +325,11 @@ def select():
     session['type'] = ""
     session['date'] = ""
     session['filename'] = ""
+    session['error_iso'] = ""
+    session['error_base'] = ""
+    session['hdrive'] = ""
+    session['mem'] = ""
+    session['conn'] = ""
 
     # Getting a list of available VMs
     list_html = ""
@@ -300,7 +337,6 @@ def select():
 
     # For every VM available, checking the "State" in each details file to evaluate if it is running before presenting an RDP download/SSH connection option
     for i in vm_dlist:
-    #############
         f = open("{{{DIREC}}}/VMS/{0}/details.txt".format(i), 'r')
         contents = f.read().strip()
         f.close()
@@ -310,7 +346,6 @@ def select():
                 contents[j] = contents[j].split(": ")[1] 
             except: 
                 contents[j] = contents[j]
-    #############
 
         state=contents[1]
         started = False
