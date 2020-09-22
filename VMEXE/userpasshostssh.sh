@@ -7,14 +7,11 @@ usermod -l "$2" msudo
 chfn -f "$2" "$2"                                                                
 usermod -d "/home/$2" -m "$2"                                                    
                                                                                  
-sleep 5                                                                          
-                                                                                 
 sed -i 's/^PermitRootLogin yes/PermitRootLogin prohibit-password/g' /etc/ssh/sshd_config
 sed -i 's/^PasswordAuthentication yes/#PasswordAuthentication yes/g' /etc/ssh/sshd_config
 service ssh restart                                                              
                                                                                  
-sleep 5                                                                          
-                                                                                 
+sudo apt-get install network-manager -y
 sudo nmcli networking off                                                        
 sudo hostnamectl set-hostname $1                                                 
 sed -i "s/msudo/$1/g" /etc/hosts                                                 
