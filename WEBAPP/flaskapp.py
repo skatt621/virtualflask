@@ -349,15 +349,6 @@ def select():
                 contents[j] = contents[j]
 
         state=contents[1]
-        #started = False
-        #
-        #p = subprocess.run("vboxmanage list runningvms | awk -F ' ' '{ print $1 }' | sed 's/\"//g' > file; cat file | tr '\n' '|' | sed 's/\(.*\)|/\\1 /'; rm file", shell = True, stdout=subprocess.PIPE)
-        #runlist = p.stdout.decode("utf-8").split("|")
-        #for j in range(0, len(runlist)):
-        #    runlist[j] = runlist[j].strip()
-        #
-        #if i in runlist:
-        #    started = True
 
         if state=="RUNNING":
             list_html += """
@@ -410,10 +401,10 @@ def edit():
         subprocess.run("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "poweron":
-        subprocess.run("vboxmanage startvm \"{0}\" --type headless; sed -i 's/STATE: RUNNING/STATE: OFF/g' \"{{{DIREC}}}/VMS/{0}/details.txt\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("vboxmanage startvm \"{0}\" --type headless; sed -i 's/STATE: OFF/STATE: RUNNING/g' \"{{{DIREC}}}/VMS/{0}/details.txt\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "poweroff":
-        subprocess.run("vboxmanage controlvm \"{0}\" poweroff; sed -i 's/STATE: OFF/STATE: RUNNING/g' \"{{{DIREC}}}/VMS/{0}/details.txt\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("vboxmanage controlvm \"{0}\" poweroff; sed -i 's/STATE: RUNNING/STATE: OFF/g' \"{{{DIREC}}}/VMS/{0}/details.txt\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     return redirect("/select")
  
