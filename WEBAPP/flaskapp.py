@@ -380,7 +380,7 @@ def select():
                          </form>
                          <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
 
-        elif state=="PROVISIONING"
+        elif state=="PROVISIONING":
             list_html += """
                          <h3>{0} (CURRENTLY PROVISIONING)</h3>
                          <form action="/edit">
