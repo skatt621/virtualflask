@@ -42,4 +42,4 @@ Python/BASH-based web interface for Oracle VM VirtualBox.
 
         /home/ubuntu/virtualflask/VMEXE/dvm.sh Ubuntu_16_D_BA  
 
-**ALTERNATIVELY** Download the tar archive "bases.tar.gz" (https://drive.google.com/file/d/1G3HNr7kADHn40RFbbetx2ml-lOaYGvLk/view?usp=sharing), place in the BASES directory, and extract. Then remove the tar archive.
+**ALTERNATIVELY** Download the tar archive "bases.tar.gz" (https://drive.google.com/file/d/1G3HNr7kADHn40RFbbetx2ml-lOaYGvLk/view?usp=sharing), place in the BASE directory, and extract. Then remove the tar archive.
