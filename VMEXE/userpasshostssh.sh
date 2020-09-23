@@ -11,12 +11,14 @@ sed -i 's/^PermitRootLogin yes/PermitRootLogin prohibit-password/g' /etc/ssh/ssh
 sed -i 's/^PasswordAuthentication yes/#PasswordAuthentication yes/g' /etc/ssh/sshd_config
 service ssh restart                                                              
                                                                                  
-sudo ifdown -a
+#sudo ifdown -a
+sudo nmcli networking off
 sudo hostnamectl
 sudo hostnamectl set-hostname $1                                                 
 sed -i "s/msudo/$1/g" /etc/hosts                                                 
 echo "$1" > /etc/hostname                                                        
 cat /etc/hosts                                                                   
 cat /etc/hostname                                                                
-sudo ifup -a
+#sudo ifup -a
+sudo nmcli networking on
 sudo hostnamectl
