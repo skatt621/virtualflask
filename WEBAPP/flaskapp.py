@@ -336,7 +336,10 @@ def select():
     list_html = ""
     vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
 
-    # For every VM available, checking the "State" in each details file to evaluate if it is running before presenting an RDP download/SSH connection option
+    # For every VM available, checking the "State" in each details file to evaluate which of the three controls (Power on, Power off, and Delete) to show for each.
+    # RUNNING VMs display full controls with "Power on" disabled.
+    # OFF VMs display full controls with "Power off" disabled.
+    # PROVISIONING display only the "Delete" control.
     for i in vm_dlist:
         f = open("{{{DIREC}}}/VMS/{0}/details.txt".format(i), 'r')
         contents = f.read().strip()
