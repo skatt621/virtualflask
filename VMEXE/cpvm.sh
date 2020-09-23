@@ -47,11 +47,8 @@ fi
 vboxmanage modifyvm "$1" --nic1 NAT
 VBoxManage startvm $1 --type headless
 
-if [ $2 = "ubuntu_16_d_base" ] || [ $2 = "ubuntu_16_s_base" ]
-then
-    {{{DIREC}}}/VMEXE/sshvm.sh $1 $5 $6
-    sed -i "s/STATE: PROVISIONING/STATE: RUNNING/g" {{{DIREC}}}/VMS/$1/details.txt
-fi
+{{{DIREC}}}/VMEXE/sshvm.sh $1 $5 $6
+sed -i "s/STATE: PROVISIONING/STATE: RUNNING/g" {{{DIREC}}}/VMS/$1/details.txt
 
 echo "================="
 echo "VM PROVISIONED AND DETAILS ADDED"

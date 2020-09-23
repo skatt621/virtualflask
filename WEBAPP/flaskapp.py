@@ -19,14 +19,6 @@ from getfreeport import getfreeport
 app = Flask(__name__, static_url_path="/static")
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-# Dictionaries used to translate HTML form arguments into VM creation/copying arguments
-# ! CHANGE THESE BASED ON THE ISOS IN YOUR "ISOS" FOLDER !
-# Values for the first can be found bu running 'VBoxManage list ostypes'
-
-type_base_dict = {
-"Ubuntu_16_D":"Ubuntu_16_D_BASE", 
-"Ubuntu_16_S":"Ubuntu_16_S_BASE"}
-
 # Basic RDP file setup; formatted and saved as a static file then served
 RDP = """
 screen mode id:i:2
@@ -115,6 +107,7 @@ def iso():
     errors.remove("")
     error_msg = ("<br></br>").join(errors)
 
+    # Adding iso files from the ISOS directory
     iso_html = ""
     iso_dlist = os.listdir("{{{DIREC}}}/ISOS")
     iso_dlist.sort()
@@ -142,7 +135,9 @@ def base():
 
     # Generating an access port and a UUID to be used in a new template-based VM
     assigned_port = str(getfreeport())
-    assigned_uuid = str(uuid.uuid1()) # Using flask session tokens to display any errors
+    assigned_uuid = str(uuid.uuid1()) 
+
+    # Using flask session tokens to display any errors
     errors = session['error_base'].split("INVALID")
     errors.remove("")
     error_msg = ("<br></br>").join(errors)
@@ -160,8 +155,10 @@ def create():
     if 'online' not in list(session.keys()):
         return redirect("/")
 
+    # Checking for various argument errors for iso-based creation
     session['error_iso'] = ""
     vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
+
     if slugify(request.args.get('NAME')) in vm_dlist:
         session['error_iso'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
@@ -197,6 +194,7 @@ def create():
     # Opening a process to create a VM and waiting to continue before the "details" file is created
     subprocess.Popen("{{{DIREC}}}/VMEXE/cvm.sh \"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" >> error_{0}.log 2>&1".format(name, iso, port, uuid, mode, hdrive, mem), shell = True, stdout=subprocess.PIPE)
 
+    # Sleep loop until basic VM files are created
     while not (os.path.isfile("{{{DIREC}}}/VMS/{0}/details.txt".format(name))):
         time.sleep(1) 
 
@@ -219,9 +217,10 @@ def copy():
     if 'online' not in list(session.keys()):
         return redirect("/")
 
+    # Checking for various argument errors for iso-based creation
     session['error_base'] = ""
-
     vm_dlist = os.listdir("{{{DIREC}}}/VMS") 
+
     if slugify(request.args.get('NAME')) in vm_dlist:
         session['error_base'] += "INVALID NAME {0} : ALREADY TAKEN".format(request.args.get('NAME'))
 
@@ -290,6 +289,7 @@ def down():
     if 'online' not in list(session.keys()):
         return redirect("/") 
 
+    # Using flask session tokens to show VM details
     details_html = ""
     details_html += "<li>Name: <strong>{0}</strong></li>\n".format(session['name'])
     details_html += "<li>Type: <strong>{0}</strong></li>\n".format(session['type'])
@@ -301,6 +301,8 @@ def down():
     if session['username'] != "":
         details_html += "<li>Username: <strong>{0}</strong></li>\n".format(session['username'])
         details_html += "<li>Password: <strong>{0}</strong></li>\n".format(session['password'])
+    else:
+        details_html += "<li><strong>Username and password not set for iso-based creation.</strong></li>\n"
 
     # Formatting and returning HTML using session tokens
     f = open('down.html', 'r')
@@ -347,41 +349,45 @@ def select():
                 contents[j] = contents[j]
 
         state=contents[1]
-        started = False
+        #started = False
+        #
+        #p = subprocess.run("vboxmanage list runningvms | awk -F ' ' '{ print $1 }' | sed 's/\"//g' > file; cat file | tr '\n' '|' | sed 's/\(.*\)|/\\1 /'; rm file", shell = True, stdout=subprocess.PIPE)
+        #runlist = p.stdout.decode("utf-8").split("|")
+        #for j in range(0, len(runlist)):
+        #    runlist[j] = runlist[j].strip()
+        #
+        #if i in runlist:
+        #    started = True
 
-        p = subprocess.run("vboxmanage list runningvms | awk -F ' ' '{ print $1 }' | sed 's/\"//g' > file; cat file | tr '\n' '|' | sed 's/\(.*\)|/\\1 /'; rm file", shell = True, stdout=subprocess.PIPE)
-        runlist = p.stdout.decode("utf-8").split("|")
-        for j in range(0, len(runlist)):
-            runlist[j] = runlist[j].strip()
-
-        if i in runlist:
-            started = True
-
-        if state == "RUNNING":
-            if started:
-                list_html += """
-                             <h3> <a href={0}>{1}</a> </h3>
-                             <form action="/edit">
-                                 <input type='hidden' name='NAME' value='{1}'/>
-                                 <button type='submit' name='ACTION' value='poweron' disabled>Power on</button>
-                                 <button type='submit' name='ACTION' value='poweroff'>Power off</button>
-                                 <button type='submit' name='ACTION' value='delete'>DELETE</button>
-                             </form>
-                             <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
-            else:
-                list_html += """
-                             <h3> <a href={0}>{1}</a> </h3>
-                             <form action="/edit">
-                                 <input type='hidden' name='NAME' value='{1}'/>
-                                 <button type='submit' name='ACTION' value='poweron'>Power on</button>
-                                 <button type='submit' name='ACTION' value='poweroff' disabled>Power off</button>
-                                 <button type='submit' name='ACTION' value='delete'>DELETE</button>
-                             </form>
-                             <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
-        else:
+        if state=="RUNNING":
             list_html += """
-                         <h3>{0}</h3>
-                         <br></br>""".format(i + " (CURRENTLY PROVISIONING)")
+                         <h3> <a href={0}>{1}</a> </h3>
+                         <form action="/edit">
+                             <input type='hidden' name='NAME' value='{1}'/>
+                             <button type='submit' name='ACTION' value='poweron' disabled>Power on</button>
+                             <button type='submit' name='ACTION' value='poweroff'>Power off</button>
+                             <button type='submit' name='ACTION' value='delete'>DELETE</button>
+                         </form>
+                         <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
+        elif state=="OFF":
+            list_html += """
+                         <h3> <a href={0}>{1}</a> </h3>
+                         <form action="/edit">
+                             <input type='hidden' name='NAME' value='{1}'/>
+                             <button type='submit' name='ACTION' value='poweron'>Power on</button>
+                             <button type='submit' name='ACTION' value='poweroff' disabled>Power off</button>
+                             <button type='submit' name='ACTION' value='delete'>DELETE</button>
+                         </form>
+                         <br> </br>""".format("static/" + i + "/" + os.listdir("static/" + i)[0], i)
+
+        elif state=="PROVISIONING"
+            list_html += """
+                         <h3>{0} (CURRENTLY PROVISIONING)</h3>
+                         <form action="/edit">
+                             <input type='hidden' name='NAME' value='{0}'/>
+                             <button type='submit' name='ACTION' value='delete'>DELETE</button>
+                         </form>
+                         <br> </br>""".format(i)
 
     # Formatting and returning HTML
     f = open('select.html', 'r')
@@ -395,17 +401,19 @@ def edit():
     if 'online' not in list(session.keys()):
         return redirect("/")
     
+    # Getting action and VM name using flask session tokens
     action = request.args.get('ACTION')
     name = request.args.get('NAME')
 
+    # Running different code based on the requested action
     if action == "delete":
         subprocess.run("{{{DIREC}}}/VMEXE/dvm.sh \"{0}\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "poweron":
-        subprocess.run("vboxmanage startvm \"{0}\" --type headless >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("vboxmanage startvm \"{0}\" --type headless; sed -i 's/STATE: RUNNING/STATE: OFF/g' \"{{{DIREC}}}/VMS/{0}/details.txt\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     if action == "poweroff":
-        subprocess.run("vboxmanage controlvm \"{0}\" poweroff >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
+        subprocess.run("vboxmanage controlvm \"{0}\" poweroff; sed -i 's/STATE: OFF/STATE: RUNNING/g' \"{{{DIREC}}}/VMS/{0}/details.txt\" >> error_{0}.log 2>&1".format(name), shell = True, stdout=subprocess.PIPE)
 
     return redirect("/select")
  

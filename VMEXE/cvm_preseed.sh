@@ -3,6 +3,7 @@
 
 # ==============================================
 # ==============================================
+# CAUTION: NOT WORKING, DO NOT USE
 
 VBoxManage createvm --basefolder "/home/clouduser/VirtualBox_IaC/VMS" --name $1 --uuid=$5 --ostype $2 --register
 VBoxManage modifyvm $1 --cpus 1 --memory 512 --vram 12
