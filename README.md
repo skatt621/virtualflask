@@ -1,5 +1,5 @@
 # virtualflask
-A Python/Flask/BASH-based web interface for Oracle VM VirtualBox.
+A Python/Flask/BASH-based web interface for Oracle VM VirtualBox for Linux systems.
 
 ## Setting up virtualflask
 ### These will get the interface usable
