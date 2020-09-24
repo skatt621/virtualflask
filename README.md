@@ -32,7 +32,7 @@ A Python/Flask/BASH-based web interface for Oracle VM VirtualBox.
 
 5. Turn off the VM from the host by running this:
 
-        vboxmanage controlvm ubuntu_16_d_base powero  
+        vboxmanage controlvm ubuntu_16_d_base poweroff  
 
 6. Copy the VM files to the BASE directory like this:  
 
@@ -40,6 +40,6 @@ A Python/Flask/BASH-based web interface for Oracle VM VirtualBox.
 
 7. Use the delete VM script to delete the VM from the VMS directory.
 
-        /home/ubuntu/virtualflask/VMEXE/dvm.sh Ubuntu_16_D_BA  
+        /home/ubuntu/virtualflask/VMEXE/dvm.sh ubuntu_16_d_base  
 
 **ALTERNATIVELY** Download the tar archive "bases.tar.gz" (https://drive.google.com/file/d/1G3HNr7kADHn40RFbbetx2ml-lOaYGvLk/view?usp=sharing), place in the BASE directory, and extract. Then remove the tar archive.
