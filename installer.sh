@@ -3,7 +3,7 @@
 set -e
 
 sudo apt-get update -y
-sudo apt-get install python3-pip -y
+sudo apt-get install python3-pip curl -y
 sudo pip3 install flask
 sudo pip3 install django
 
