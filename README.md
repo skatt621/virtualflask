@@ -13,6 +13,7 @@ A Python/Flask/BASH-based web interface for Oracle VM VirtualBox.
 
 ## Initial Instructions
 ### These will create a usable template VM for the copy function to work
+### **NOTE: THE COPY FUNCTION CURRENTLY ONLY WORKS FOR APT-BASED OPERATING SYSTEMS**
 1. Change to the WEBAPP directory and run flaskapp.py like this:  
 
         cd /home/ubuntu/virtualflask/WEBAPP  
