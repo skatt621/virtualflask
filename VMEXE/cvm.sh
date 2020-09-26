@@ -5,7 +5,7 @@ set -x
 # ==============================================
 # ==============================================
 
-VBoxManage createvm --basefolder "{{{DIREC}}}/VMS" --name $1 --uuid=$4 --ostype $2 --register
+VBoxManage createvm --basefolder "{{{DIREC}}}/VMS" --name $1 --uuid=$4 --register
 VBoxManage modifyvm $1 --cpus 1 --memory $7 --vram 12
 echo "================="
 echo "VM CREATED"

@@ -8,8 +8,9 @@ sudo pip3 install flask
 sudo pip3 install django
 
 sudo apt-get install virtualbox -y
-sudo curl https://download.virtualbox.org/virtualbox/5.2.44/Oracle_VM_VirtualBox_Extension_Pack-5.2.44.vbox-extpack > Oracle_VM_VirtualBox_Extension_Pack-5.2.44.vbox-extpack
-echo "y" | sudo vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-5.2.44.vbox-extpack
+sudo curl https://download.virtualbox.org/virtualbox/6.1.10/Oracle_VM_VirtualBox_Extension_Pack-6.1.10.vbox-extpack > Oracle_VM_VirtualBox_Extension_Pack-6.1.10.vbox-extpack
+echo "y" | sudo vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.10.vbox-extpack
+sudo vboxmanage extpack uninstall --force VNC
 
 declare -a file_list=( "./WEBAPP/flaskapp.py" "./WEBAPP/getfreeport.py" "./VMEXE/cvm.sh" "./VMEXE/cpvm.sh" "./VMEXE/sshvm.sh" "./VMEXE/dvm.sh" )
 
