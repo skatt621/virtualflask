@@ -7,7 +7,7 @@ sudo pip3 install flask
 sudo pip3 install django
 
 sudo apt-get install virtualbox -y
-vboxver=`vboxmanage --version | awk -F '_' '{print $1}'
+vboxver=`vboxmanage --version | awk -F '_' '{print $1}'`
 sudo curl https://download.virtualbox.org/virtualbox/$vboxver/Oracle_VM_VirtualBox_Extension_Pack-$vboxver.vbox-extpack > Oracle_VM_VirtualBox_Extension_Pack-$vboxver.vbox-extpack
 echo "y" | sudo vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-$vboxver.vbox-extpack
 sudo vboxmanage extpack uninstall --force VNC
