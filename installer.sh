@@ -1,6 +1,5 @@
 #!/bin/bash
 # $1 = IP address, $2 = web port, $3 = port range lower bound, $4 = port range upper bound
-set -e
 
 sudo apt-get update -y
 sudo apt-get install python3-pip curl -y
