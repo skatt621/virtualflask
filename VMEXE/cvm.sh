@@ -7,6 +7,7 @@ set -x
 
 VBoxManage createvm --basefolder "{{{DIREC}}}/VMS" --name $1 --uuid=$4 --register
 VBoxManage modifyvm $1 --cpus 1 --memory $7 --vram 12
+VBoxManage modifyvm $1 --acpi on --ioapic on
 echo "================="
 echo "VM CREATED"
 
